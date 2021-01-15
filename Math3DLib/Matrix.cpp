@@ -78,8 +78,7 @@ Matrix<T>::Matrix(const Matrix<T>& m) : rows(m.rows), columns(m.columns)
 template <typename T>
 Matrix<T>::~Matrix()
 {
-	delete[] this->values;
-	this->values = nullptr;
+	this->CleanupMatrixData();
 }
 
 template <typename T>
