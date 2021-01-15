@@ -43,6 +43,16 @@ namespace math3d
 		}
 	};
 
+	class MatrixNonReversible : public MathException
+	{
+	public:
+		MatrixNonReversible() {}
+		virtual const char* what() const noexcept override
+		{
+			return "Matrix is not reversible";
+		}
+	};
+
 	class VectorInvalidSize : public MathException
 	{
 	public:

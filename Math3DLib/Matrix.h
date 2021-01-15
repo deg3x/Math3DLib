@@ -23,22 +23,22 @@ namespace math3d
 
 		void CleanupMatrixData();
 
-		Matrix<T>* GetRow(const uint_t row) const;
-		Matrix<T>* GetColumn(const uint_t column) const;
-		Matrix<T>* GetWithRemovedRows(const uint_t row_s, const uint_t row_e) const;
-		Matrix<T>* GetWithRemovedColumns(const uint_t column_s, const uint_t column_e) const;
-		Matrix<T>* GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const;
+		Matrix<T> GetRow(const uint_t row) const;												//
+		Matrix<T> GetColumn(const uint_t column) const;											//
+		Matrix<T> GetWithRemovedRows(const uint_t row_s, const uint_t row_e) const;				//
+		Matrix<T> GetWithRemovedColumns(const uint_t column_s, const uint_t column_e) const;	//
+		Matrix<T> GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const;	//
 		T Determinant() const;
 		void Transpose();
 		void Negate();
 		bool Reverse();
 
-		static Matrix<T>* Transpose(const Matrix<T>& matrix);
-		static Matrix<T>* Negate(const Matrix<T>& matrix);
-		static Matrix<T>* ReverseMatrix(const Matrix<T>& matrix);
-		static Matrix<T>* CofactorMatrix(const Matrix<T>& matrix);
-		static Matrix<T>* AdjugateMatrix(const Matrix<T>& matrix);
-		static Matrix<T>* CreateIdentity(const uint_t size);
+		static Matrix<T> Transpose(const Matrix<T>& matrix);		//
+		static Matrix<T> Negate(const Matrix<T>& matrix);			//
+		static Matrix<T> ReverseMatrix(const Matrix<T>& matrix);	//
+		static Matrix<T> CofactorMatrix(const Matrix<T>& matrix);	//
+		static Matrix<T> AdjugateMatrix(const Matrix<T>& matrix);	//
+		static Matrix<T> CreateIdentity(const uint_t size);			//
 
 		Matrix<T>& operator+=(const Matrix<T>& m);
 		Matrix<T>& operator-=(const Matrix<T>& m);
@@ -47,7 +47,8 @@ namespace math3d
 		Matrix<T>& operator*=(const float& scalar);
 		Matrix<T>& operator*=(const int& scalar);
 		Matrix<T>& operator*=(const uint_t& scalar);
-		Matrix<T>* operator[](const int index) const;
+		/*Matrix<T>& operator[](const int index);
+		const Matrix<T>& operator[](const int index) const;*/
 		
 		inline bool IsSquare() const
 		{
