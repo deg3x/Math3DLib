@@ -1,6 +1,9 @@
 ### Custom ignores
 
-
+*.sln
+*.vcxproj
+*.vcxproj.filters
+Math3D.cpp
 
 ### Github provided VS gitignore file
 ## Ignore Visual Studio temporary files, build results, and
