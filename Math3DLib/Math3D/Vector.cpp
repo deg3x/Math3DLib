@@ -192,9 +192,9 @@ Vector<T> Vector<T>::CrossProduct(const Vector<T>& vectorA, const Vector<T>& vec
 	{
 		ret = Vector<T>(vectorA.size);
 
-		ret.SetValueAt(0, (vectorA.GetValueAt(0) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(0)));
-		ret.SetValueAt(1, -(vectorA.GetValueAt(1) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(1)));
-		ret.SetValueAt(2, (vectorA.GetValueAt(0) * vectorB.GetValueAt(1)) - (vectorA.GetValueAt(1) * vectorB.GetValueAt(0)));
+		ret.SetValueAt(0,  (vectorA.GetValueAt(1) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(1)));
+		ret.SetValueAt(1, -((vectorA.GetValueAt(0) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(0))));
+		ret.SetValueAt(2,  (vectorA.GetValueAt(0) * vectorB.GetValueAt(1)) - (vectorA.GetValueAt(1) * vectorB.GetValueAt(0)));
 	}
 
 	return ret;
