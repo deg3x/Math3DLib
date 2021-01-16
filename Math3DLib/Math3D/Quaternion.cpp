@@ -176,6 +176,8 @@ Quaternion& Quaternion::operator=(const Quaternion& quat)
 	this->x = quat.x;
 	this->y = quat.y;
 	this->z = quat.z;
+
+	return *this;
 }
 
 Quaternion& Quaternion::operator+=(const Quaternion& quat)
