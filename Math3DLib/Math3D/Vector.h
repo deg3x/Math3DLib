@@ -30,6 +30,7 @@ namespace math3d
 		static T DotProduct(const Vector<T>& vectorA, const Vector<T>& vectorB);
 		static Vector<T> CrossProduct(const Vector<T>& vectorA, const Vector<T>& vectorB);
 
+		Vector<T>& operator=(Vector<T> v);
 		Vector<T>& operator+=(const Vector<T>& v);
 		Vector<T>& operator-=(const Vector<T>& v);
 		T operator[](const int index) const;
@@ -52,6 +53,12 @@ namespace math3d
 			}
 
 			*(values + index) = value;
+		}
+
+		friend void Swap(Vector<T>& vectorA, Vector<T>& vectorB)
+		{
+			std::swap(vectorA.size, vectorB.size);
+			std::swap(vectorA.values, vectorB.values);
 		}
 
 		friend std::ostream& operator<<(std::ostream& out, const Vector& v)

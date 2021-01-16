@@ -201,6 +201,14 @@ Vector<T> Vector<T>::CrossProduct(const Vector<T>& vectorA, const Vector<T>& vec
 }
 
 template <typename T>
+Vector<T>& Vector<T>::operator=(Vector<T> v)
+{
+	Swap(*this, v);
+
+	return *this;
+}
+
+template <typename T>
 Vector<T>& Vector<T>::operator+=(const Vector<T>& v)
 {
 	if (v.size != this->size)
