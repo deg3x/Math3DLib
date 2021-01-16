@@ -170,6 +170,14 @@ Quaternion Quaternion::Slerp(const Quaternion& quatA, const Quaternion& quatB, c
 	return ret;
 }
 
+Quaternion& Quaternion::operator=(const Quaternion& quat)
+{
+	this->w = quat.w;
+	this->x = quat.x;
+	this->y = quat.y;
+	this->z = quat.z;
+}
+
 Quaternion& Quaternion::operator+=(const Quaternion& quat)
 {
 	this->w += quat.w;

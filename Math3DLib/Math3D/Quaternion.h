@@ -39,6 +39,7 @@ namespace math3d
 		static Vector3 RotateVectorBy(Vector3 vec, Quaternion quat);
 		static Quaternion Slerp(const Quaternion& quatA, const Quaternion& quatB, const double A);
 
+		Quaternion& operator=(const Quaternion& quat);
 		Quaternion& operator+=(const Quaternion& quat);
 		Quaternion& operator-=(const Quaternion& quat);
 		Quaternion& operator*=(const Quaternion& quat);
