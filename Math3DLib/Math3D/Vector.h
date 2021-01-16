@@ -28,7 +28,7 @@ namespace math3d
 
 		static Vector<T> Normalize(const Vector<T>& vec);
 		static T DotProduct(const Vector<T>& vectorA, const Vector<T>& vectorB);
-		static Vector<T>* CrossProduct(const Vector<T>& vectorA, const Vector<T>& vectorB);
+		static Vector<T> CrossProduct(const Vector<T>& vectorA, const Vector<T>& vectorB);
 
 		Vector<T>& operator+=(const Vector<T>& v);
 		Vector<T>& operator-=(const Vector<T>& v);

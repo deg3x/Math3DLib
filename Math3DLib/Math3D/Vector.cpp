@@ -165,7 +165,7 @@ T Vector<T>::DotProduct(const Vector<T>& vectorA, const Vector<T>& vectorB)
 }
 
 template <typename T>
-Vector<T>* Vector<T>::CrossProduct(const Vector<T>& vectorA, const Vector<T>& vectorB)
+Vector<T> Vector<T>::CrossProduct(const Vector<T>& vectorA, const Vector<T>& vectorB)
 {
 	if (vectorA.size != vectorB.size)
 	{
@@ -174,39 +174,30 @@ Vector<T>* Vector<T>::CrossProduct(const Vector<T>& vectorA, const Vector<T>& ve
 
 	if (vectorA.size > 3 || vectorA.size <= 1)
 	{
-		return nullptr;
+		throw VectorInvalidSize();
 	}
 
-	try
+	Vector<T> ret;
+
+	if (vectorA.size == 2)
 	{
-		Vector<T>* ret = new Vector<T>(vectorA.size);
+		ret = Vector<T>(1);
 
-		if (vectorA.size == 2)
-		{
-			ret = new Vector<T>(1);
+		T vals[] = { -vectorA.GetValueAt(1), vectorA.GetValueAt(0) };
+		Vector<T> perp(2, vals);
 
-			T vals[] = { -vectorA.GetValueAt(1), vectorA.GetValueAt(0) };
-			Vector<T> perp(2, vals);
-
-			ret->SetValueAt(0, DotProduct(perp, vectorB));
-		}
-		else
-		{
-			ret = new Vector<T>(vectorA.size);
-
-			ret->SetValueAt(0, (vectorA.GetValueAt(0) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(0)));
-			ret->SetValueAt(1, -(vectorA.GetValueAt(1) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(1)));
-			ret->SetValueAt(2, (vectorA.GetValueAt(0) * vectorB.GetValueAt(1)) - (vectorA.GetValueAt(1) * vectorB.GetValueAt(0)));
-		}
-		
-		return ret;
+		ret.SetValueAt(0, DotProduct(perp, vectorB));
 	}
-	catch (std::bad_alloc& ex)
+	else
 	{
-		std::cerr << ex.what() << std::endl;
+		ret = Vector<T>(vectorA.size);
 
-		return nullptr;
+		ret.SetValueAt(0, (vectorA.GetValueAt(0) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(0)));
+		ret.SetValueAt(1, -(vectorA.GetValueAt(1) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(1)));
+		ret.SetValueAt(2, (vectorA.GetValueAt(0) * vectorB.GetValueAt(1)) - (vectorA.GetValueAt(1) * vectorB.GetValueAt(0)));
 	}
+
+	return ret;
 }
 
 template <typename T>
