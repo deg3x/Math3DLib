@@ -367,7 +367,6 @@ Matrix<T> Matrix<T>::GetSubmatrix(const uint_t row_s, const uint_t column_s, con
 template <typename T>
 T Matrix<T>::Determinant() const
 {
-	std::cout << *this << std::endl;
 	if (!this->IsSquare())
 	{
 		throw MatrixNoSquare();
