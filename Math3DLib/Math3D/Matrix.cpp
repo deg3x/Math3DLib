@@ -424,6 +424,14 @@ Matrix<T> Matrix<T>::CreateIdentity(const uint_t size)
 }
 
 template <typename T>
+Matrix<T>& Matrix<T>::operator=(Matrix<T> m)
+{
+	Swap(*this, m);
+
+	return *this;
+}
+
+template <typename T>
 Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& m)
 {
 	if (m.rows != this->rows || m.columns != this->columns)

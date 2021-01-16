@@ -40,6 +40,7 @@ namespace math3d
 		static Matrix<T> AdjugateMatrix(const Matrix<T>& matrix);
 		static Matrix<T> CreateIdentity(const uint_t size);
 
+		Matrix<T>& operator=(Matrix<T> m);
 		Matrix<T>& operator+=(const Matrix<T>& m);
 		Matrix<T>& operator-=(const Matrix<T>& m);
 		Matrix<T>& operator*=(const Matrix<T>& m);
@@ -83,6 +84,13 @@ namespace math3d
 			}
 
 			*(values + row * columns + column) = value;
+		}
+
+		friend void Swap(Matrix<T>& matrixA, Matrix<T>& matrixB)
+		{
+			std::swap(matrixA.rows, matrixB.rows);
+			std::swap(matrixA.columns, matrixB.columns);
+			std::swap(matrixA.values, matrixB.values);
 		}
 
 		friend std::ostream& operator<<(std::ostream& out, const Matrix& m)
