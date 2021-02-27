@@ -4,7 +4,11 @@
 
 namespace math3d
 {
-	class Vector2 : public Vector<double>
+	typedef Vector<float, 2> Vector2;
+	typedef Vector<float, 3> Vector3;
+
+
+	/*class Vector2 : public Vector<double>
 	{
 	public:
 		Vector2() : Vector<double>(2) {}
@@ -62,5 +66,5 @@ namespace math3d
 	public:
 		Matrix4x4() : Matrix<double>(4, 4) {}
 		Matrix4x4(const double* values) : Matrix<double>(4, 4, values) {}
-	};
+	};*/
 }

@@ -5,79 +5,49 @@
 
 using namespace math3d;
 
-template <typename T>
-Vector<T>::Vector(uint_t size) : size(size)
+template <typename T, uint_t S>
+Vector<T, S>::Vector()
 {
-	if (size == 0)
+	if (S == 0)
 	{
 		throw VectorInvalidSize();
 	}
 
-	try
+	for (int i = 0; i < S; i++)
 	{
-		this->values = new T[size];
-	}
-	catch (std::bad_alloc& ex)
-	{
-		this->CleanupVectorData();
-		std::cerr << ex.what();
+		*(this->values + i) = (T)0;
 	}
 }
 
-template <typename T>
-Vector<T>::Vector(uint_t size, const T* const values) : Vector(size)
-{
-	if (this->values == nullptr)
+template <typename T, uint_t S>
+Vector<T, S>::Vector(const T* const values)
+{	
+	if (S == 0)
 	{
-		return;
+		throw VectorInvalidSize();
 	}
-	
-	for (int i = 0; i < size; i++)
+
+	for (int i = 0; i < S; i++)
 	{
 		*(this->values + i) = *(values + i);
 	}
 }
 
-template <typename T>
-Vector<T>::Vector(const Vector<T>& v) : size(v.size)
+template <typename T, uint_t S>
+Vector<T, S>::Vector(const Vector<T, S>& v)
 {
-	if (this->values != nullptr)
-	{
-		this->CleanupVectorData();
-	}
-
-	try
-	{
-		values = new T[size];
-	}
-	catch (std::bad_alloc& ex)
-	{
-		this->CleanupVectorData();
-
-		std::cerr << ex.what();
-
-		return;
-	}
-
-	for (int i = 0; i < v.size; i++)
+	for (int i = 0; i < S; i++)
 	{
 		*(this->values + i) = *(v.values + i);
 	}
 }
 
-template <typename T>
-Vector<T>::~Vector()
+template <typename T, uint_t S>
+T Vector<T, S>::Magnitude() const
 {
-	delete[] this->values;
-	this->values = nullptr;
-}
+	T len = (T)0;
 
-template <typename T>
-T Vector<T>::Magnitude() const
-{
-	T len = 0.0;
-
-	for (int i = 0; i < this->size; i++)
+	for (int i = 0; i < S; i++)
 	{
 		len += this->GetValueAt(i) * this->GetValueAt(i);
 	}
@@ -85,42 +55,30 @@ T Vector<T>::Magnitude() const
 	return sqrt(len);
 }
 
-template <typename T>
-void Vector<T>::Normalize()
+template <typename T, uint_t S>
+void Vector<T, S>::Normalize()
 {
-	double len = this->Magnitude();
+	T len = this->Magnitude();
 
-	for (int i = 0; i < this->size; i++)
+	for (int i = 0; i < S; i++)
 	{
 		*(this->values + i) /= len;
 	}
 }
 
-template <typename T>
-bool Vector<T>::IsNormalized() const
+template <typename T, uint_t S>
+bool Vector<T, S>::IsNormalized() const
 {
 	return IsNearlyEqual(this->Magnitude(), (T)1) ? true : false;
 }
 
-template <typename T>
-void Vector<T>::CleanupVectorData()
+template <typename T, uint_t S>
+Vector<T, S> Vector<T, S>::Normalize(const Vector<T, S>& vec)
 {
-	if (this->values != nullptr)
-	{
-		delete[] this->values;
-		this->values = nullptr;
-	}
+	T len = vec.Magnitude();
+	Vector<T, S> ret;
 
-	size = 0;
-}
-
-template <typename T>
-Vector<T> Vector<T>::Normalize(const Vector<T>& vec)
-{
-	double len = vec.Magnitude();
-	Vector<T> ret(vec.size);
-
-	for (int i = 0; i < ret.size; i++)
+	for (int i = 0; i < S; i++)
 	{
 		ret.SetValueAt(i, vec.GetValueAt(i) / len);
 	}
@@ -128,17 +86,12 @@ Vector<T> Vector<T>::Normalize(const Vector<T>& vec)
 	return ret;
 }
 
-template <typename T>
-T Vector<T>::DotProduct(const Vector<T>& vector) const
+template <typename T, uint_t S>
+T Vector<T, S>::DotProduct(const Vector<T, S>& vector) const
 {
-	if (this->size != vector.size)
-	{
-		throw VectorInvalidSize();
-	}
-
 	T dot = 0;
 
-	for (uint_t i = 0; i < this->size; i++)
+	for (uint_t i = 0; i < S; i++)
 	{
 		dot += this->GetValueAt(i) * vector.GetValueAt(i);
 	}
@@ -146,17 +99,12 @@ T Vector<T>::DotProduct(const Vector<T>& vector) const
 	return dot;
 }
 
-template <typename T>
-T Vector<T>::DotProduct(const Vector<T>& vectorA, const Vector<T>& vectorB)
+template <typename T, uint_t S>
+T Vector<T, S>::DotProduct(const Vector<T, S>& vectorA, const Vector<T, S>& vectorB)
 {
-	if (vectorA.size != vectorB.size)
-	{
-		throw VectorInvalidSize();
-	}
-
 	T dot = 0;
 
-	for (uint_t i = 0; i < vectorA.size; i++)
+	for (uint_t i = 0; i < S; i++)
 	{
 		dot += vectorA.GetValueAt(i) * vectorB.GetValueAt(i);
 	}
@@ -164,59 +112,49 @@ T Vector<T>::DotProduct(const Vector<T>& vectorA, const Vector<T>& vectorB)
 	return dot;
 }
 
-template <typename T>
-Vector<T> Vector<T>::CrossProduct(const Vector<T>& vectorA, const Vector<T>& vectorB)
+template <typename T, uint_t S>
+Vector<T, S> Vector<T, S>::CrossProduct(const Vector<T, S>& vectorA, const Vector<T, S>& vectorB)
 {
-	if (vectorA.size != vectorB.size)
+	if (S > 3 || S <= 1)
 	{
 		throw VectorInvalidSize();
 	}
 
-	if (vectorA.size > 3 || vectorA.size <= 1)
+	if (S == 2)
 	{
-		throw VectorInvalidSize();
-	}
-
-	Vector<T> ret;
-
-	if (vectorA.size == 2)
-	{
-		ret = Vector<T>(1);
+		Vector<T, S> ret;
 
 		T vals[] = { -vectorA.GetValueAt(1), vectorA.GetValueAt(0) };
-		Vector<T> perp(2, vals);
+		Vector<T, S> perp(vals);
 
 		ret.SetValueAt(0, DotProduct(perp, vectorB));
+
+		return ret;
 	}
 	else
 	{
-		ret = Vector<T>(vectorA.size);
+		Vector<T, S> ret;
 
 		ret.SetValueAt(0,  (vectorA.GetValueAt(1) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(1)));
 		ret.SetValueAt(1, -((vectorA.GetValueAt(0) * vectorB.GetValueAt(2)) - (vectorA.GetValueAt(2) * vectorB.GetValueAt(0))));
 		ret.SetValueAt(2,  (vectorA.GetValueAt(0) * vectorB.GetValueAt(1)) - (vectorA.GetValueAt(1) * vectorB.GetValueAt(0)));
-	}
 
-	return ret;
+		return ret;
+	}
 }
 
-template <typename T>
-Vector<T>& Vector<T>::operator=(Vector<T> v)
+template <typename T, uint_t S>
+Vector<T, S>& Vector<T, S>::operator=(Vector<T, S> v)
 {
 	Swap(*this, v);
 
 	return *this;
 }
 
-template <typename T>
-Vector<T>& Vector<T>::operator+=(const Vector<T>& v)
+template <typename T, uint_t S>
+Vector<T, S>& Vector<T, S>::operator+=(const Vector<T, S>& v)
 {
-	if (v.size != this->size)
-	{
-		throw VectorInvalidSize();
-	}
-
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < S; i++)
 	{
 		this->SetValueAt(i, this->GetValueAt(i) + v.GetValueAt(i));
 	}
@@ -224,15 +162,10 @@ Vector<T>& Vector<T>::operator+=(const Vector<T>& v)
 	return *this;
 }
 
-template <typename T>
-Vector<T>& Vector<T>::operator-=(const Vector<T>& v)
+template <typename T, uint_t S>
+Vector<T, S>& Vector<T, S>::operator-=(const Vector<T, S>& v)
 {
-	if (v.size != this->size)
-	{
-		throw VectorInvalidSize();
-	}
-
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < S; i++)
 	{
 		this->SetValueAt(i, this->GetValueAt(i) - v.GetValueAt(i));
 	}
@@ -240,10 +173,10 @@ Vector<T>& Vector<T>::operator-=(const Vector<T>& v)
 	return *this;
 }
 
-template <typename T>
-T Vector<T>::operator[](const int index) const
+template <typename T, uint_t S>
+T Vector<T, S>::operator[](const int index) const
 {
-	if (this->size <= index)
+	if (S <= index)
 	{
 		throw VectorInvalidIndex();
 	}
@@ -252,6 +185,11 @@ T Vector<T>::operator[](const int index) const
 }
 
 /* Enforce numeric types */
-//template class Vector<int>;
-template class Vector<float>;
-template class Vector<double>;
+template class Vector<float, 1>;
+template class Vector<float, 2>;
+template class Vector<float, 3>;
+template class Vector<float, 4>;
+template class Vector<double, 1>;
+template class Vector<double, 2>;
+template class Vector<double, 3>;
+template class Vector<double, 4>;

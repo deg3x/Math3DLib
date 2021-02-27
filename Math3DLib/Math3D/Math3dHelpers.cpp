@@ -2,7 +2,7 @@
 
 using namespace math3d;
 
-Vector2::Vector2(double x, double y)
+/*Vector2::Vector2(double x, double y)
 {
 	try
 	{
@@ -57,4 +57,4 @@ Vector4::Vector4(double x, double y, double z, double w)
 	*(this->values + 1) = y;
 	*(this->values + 2) = z;
 	*(this->values + 3) = w;
-}
+}*/

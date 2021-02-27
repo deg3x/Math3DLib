@@ -71,11 +71,12 @@ double Quaternion::DotProduct(const Quaternion& quat) const
 
 Vector3 Quaternion::RotateVector(Vector3 vec)
 {
-	Quaternion rotated = *this * Quaternion(0.0, vec.GetX(), vec.GetY(), vec.GetZ()) * Quaternion::Inverse(*this);
+	Quaternion rotated = *this * Quaternion(0.0, vec[0], vec[1], vec[2]) * Quaternion::Inverse(*this);
 	rotated.ClearNearlyZeroComponents();
-	Vector3 ret(rotated.x, rotated.y, rotated.z);
 
-	return ret;
+	float ret[3] = { rotated.x, rotated.y, rotated.z };
+
+	return Vector3(ret);
 }
 
 Quaternion Quaternion::Slerp(const Quaternion& quat, const double alpha) const
@@ -140,9 +141,9 @@ Quaternion Quaternion::CreateRotationAboutAxis(double angle, Vector3 axis)
 	angle /= 2.0f;
 
 	rotation.w = cos(angle);
-	rotation.x = sin(angle) * axis.GetX();
-	rotation.y = sin(angle) * axis.GetY();
-	rotation.z = sin(angle) * axis.GetZ();
+	rotation.x = sin(angle) * axis[0];
+	rotation.y = sin(angle) * axis[1];
+	rotation.z = sin(angle) * axis[2];
 
 	rotation.ClearNearlyZeroComponents();
 
@@ -151,11 +152,12 @@ Quaternion Quaternion::CreateRotationAboutAxis(double angle, Vector3 axis)
 
 Vector3 Quaternion::RotateVectorBy(Vector3 vec, Quaternion quat)
 {
-	Quaternion rotated = quat * Quaternion(0.0, vec.GetX(), vec.GetY(), vec.GetZ()) * Quaternion::Inverse(quat);
+	Quaternion rotated = quat * Quaternion(0.0, vec[0], vec[1], vec[2]) * Quaternion::Inverse(quat);
 	rotated.ClearNearlyZeroComponents();
-	Vector3 ret(rotated.x, rotated.y, rotated.z);
 
-	return ret;
+	float ret[3] = { rotated.x, rotated.y, rotated.z };
+
+	return Vector3(ret);
 }
 
 Quaternion Quaternion::Slerp(const Quaternion& quatA, const Quaternion& quatB, const double alpha)
