@@ -11,8 +11,6 @@ namespace math3d
 	{
 	protected:
 		T values[S];
-		//T* values = nullptr;
-		//uint_t size;
 
 	public:
 		Vector();
