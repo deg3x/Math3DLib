@@ -6,7 +6,9 @@ namespace math3d
 {
 	typedef Vector<float, 2> Vector2;
 	typedef Vector<float, 3> Vector3;
-
+	typedef Matrix<float, 2, 2> Matrix2x2;
+	typedef Matrix<float, 3, 3> Matrix3x3;
+	typedef Matrix<float, 4, 4> Matrix4x4;
 
 	/*class Vector2 : public Vector<double>
 	{

@@ -5,106 +5,48 @@
 
 using namespace math3d;
 
-template <typename T>
-Matrix<T>::Matrix(const uint_t rows, const uint_t columns) : rows(rows), columns(columns)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>::Matrix()
 {
-	if (rows == 0 || columns == 0)
+	for (uint_t i = 0; i < R * C; i++)
 	{
-		throw MatrixInvalidDimension();
-	}
-	
-	try
-	{
-		this->values = new T[rows * columns];
-	}
-	catch (std::bad_alloc& ex)
-	{
-		this->CleanupMatrixData();
-
-		std::cerr << "[!] " << ex.what() << std::endl;
-	}
-
-	for (uint_t i = 0; i < rows * columns; i++)
-	{
-		*(this->values + i) = 0;
+		*(this->values + i) = (T)0;
 	}
 }
 
 /* Caller is responsible for handling memory violation via out of bounds values pointer dereference */
-template <typename T>
-Matrix<T>::Matrix(const uint_t rows, const uint_t columns, const T* values) : Matrix(rows, columns)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>::Matrix(const T* values)
 {
-	if (this->values == nullptr)
+	for (uint_t i = 0; i < R; i++)
 	{
-		return;
-	}
-
-	for (uint_t i = 0; i < rows; i++)
-	{
-		for (uint_t j = 0; j < columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
-			*(this->values + i*columns + j) = *(values + i*columns + j);
+			*(this->values + i*C + j) = *(values + i*C + j);
 		}
 	}
 }
 
-template <typename T>
-Matrix<T>::Matrix(const Matrix<T>& m) : rows(m.rows), columns(m.columns)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>::Matrix(const Matrix<T, R, C>& m)
 {
-	if (this->values != nullptr)
-	{
-		this->CleanupMatrixData();
-	}
-
-	try
-	{
-		this->values = new T[m.rows * m.columns];
-	}
-	catch (std::bad_alloc& ex)
-	{
-		this->CleanupMatrixData();
-
-		std::cerr << "[!] " << ex.what() << std::endl;
-
-		return;
-	}
-
-	for (uint_t i = 0; i < m.rows * m.columns; i++)
+	for (uint_t i = 0; i < R * C; i++)
 	{
 		*(this->values + i) = *(m.values + i);
 	}
 }
 
-template <typename T>
-Matrix<T>::~Matrix()
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, 1, C> Matrix<T, R, C>::GetRow(const uint_t row) const
 {
-	this->CleanupMatrixData();
-}
-
-template <typename T>
-void Matrix<T>::CleanupMatrixData()
-{
-	if (this->values != nullptr)
-	{
-		delete[] values;
-		this->values = nullptr;
-	}
-
-	this->rows = 0;
-	this->columns = 0;
-}
-
-template <typename T>
-Matrix<T> Matrix<T>::GetRow(const uint_t row) const
-{
-	if (row >= this->rows)
+	if (row >= R)
 	{
 		throw MatrixInvalidIndex();
 	}
 
-	Matrix<T> ret(1, this->columns);
+	Matrix<T, 1, C> ret;
 
-	for (uint_t i = 0; i < this->columns; i++)
+	for (uint_t i = 0; i < C; i++)
 	{
 		ret.SetValueAt(0, i, this->GetValueAt(row, i));
 	}
@@ -112,17 +54,17 @@ Matrix<T> Matrix<T>::GetRow(const uint_t row) const
 	return ret;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::GetColumn(const uint_t column) const
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, 1> Matrix<T, R, C>::GetColumn(const uint_t column) const
 {
-	if (column >= this->columns)
+	if (column >= C)
 	{
 		throw MatrixInvalidIndex();
 	}
 
-	Matrix<T> ret(this->rows, 1);
+	Matrix<T, R, 1> ret;
 
-	for (uint_t i = 0; i < this->rows; i++)
+	for (uint_t i = 0; i < R; i++)
 	{
 		ret.SetValueAt(i, 0, this->GetValueAt(i, column));
 	}
@@ -130,61 +72,26 @@ Matrix<T> Matrix<T>::GetColumn(const uint_t column) const
 	return ret;
 }
 
-template <typename T>
-void Matrix<T>::Transpose()
+template <typename T, uintm_t R, uintm_t C>
+void Matrix<T, R, C>::Negate()
 {
-	uint_t counter = 1;
-	T placeholder;
-
-	for (uint_t i = 1; i < this->rows; i++, counter++)
+	for (uint_t i = 0; i < R; i++)
 	{
-		for (uint_t j = 0; j < counter; j++)
-		{
-			placeholder = this->GetValueAt(i, j);
-			this->SetValueAt(i, j, this->GetValueAt(j, i));
-			this->SetValueAt(j, i, placeholder);
-		}
-	}
-}
-
-template <typename T>
-void Matrix<T>::Negate()
-{
-	for (uint_t i = 0; i < this->rows; i++)
-	{
-		for (uint_t j = 0; j < this->columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
 			this->SetValueAt(i, j, -this->GetValueAt(i, j));
 		}
 	}
 }
 
-
-template <typename T>
-bool Matrix<T>::Reverse()
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, C, R> Matrix<T, R, C>::Transpose(const Matrix<T, R, C>& matrix)
 {
-	if (!this->IsSquare() || IsNearlyEqual(this->Determinant(), (T)0))
-	{
-		return false;
-	}
-
-	Matrix<T> tmpMatrix = ReverseMatrix(*this);
-
-	this->CleanupMatrixData();
-
-	*this = tmpMatrix;
-
-	return true;
-}
-
-template <typename T>
-Matrix<T> Matrix<T>::Transpose(const Matrix<T>& matrix)
-{
-	Matrix<T> ret(matrix.rows, matrix.columns);
+	Matrix<T, C, R> ret;
 
 	uint_t counter = 0;
 
-	for (uint_t i = 0; i < matrix.rows; i++, counter++)
+	for (uint_t i = 0; i < R; i++, counter++)
 	{
 		ret.SetValueAt(i, i, matrix.GetValueAt(i, i));
 
@@ -198,14 +105,14 @@ Matrix<T> Matrix<T>::Transpose(const Matrix<T>& matrix)
 	return ret;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::Negate(const Matrix<T>& matrix)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C> Matrix<T, R, C>::Negate(const Matrix<T, R, C>& matrix)
 {
-	Matrix<T> ret(matrix.rows, matrix.columns);
+	Matrix<T, R, C> ret;
 
-	for (uint_t i = 0; i < matrix.rows; i++)
+	for (uint_t i = 0; i < R; i++)
 	{
-		for (uint_t j = 0; j < matrix.columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
 			ret.SetValueAt(i, j, -matrix.GetValueAt(i, j));
 		}
@@ -214,8 +121,8 @@ Matrix<T> Matrix<T>::Negate(const Matrix<T>& matrix)
 	return ret;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::ReverseMatrix(const Matrix<T>& matrix)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, C, R> Matrix<T, R, C>::ReverseMatrix(const Matrix<T, R, C>& matrix)
 {
 	T det = matrix.Determinant();
 
@@ -224,38 +131,37 @@ Matrix<T> Matrix<T>::ReverseMatrix(const Matrix<T>& matrix)
 		throw MatrixNonReversible();
 	}
 
-	Matrix<T> ret = matrix.AdjugateMatrix(matrix);
+	Matrix<T, C, R> ret = matrix.AdjugateMatrix(matrix);
 
-	ret *= 1.0 / (double)det;
+	ret *= (T)1 / (T)det;
 
 	return ret;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::CofactorMatrix(const Matrix<T>& matrix)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C> Matrix<T, R, C>::CofactorMatrix(const Matrix<T, R, C>& matrix)
 {
 	if (!matrix.IsSquare())
 	{
 		throw MatrixNoSquare();
 	}
 
-	Matrix<T> ret(matrix.rows, matrix.columns);
+	Matrix<T, R, C> ret;
 
-	if (matrix.rows == 1)
+	if (R == 1)
 	{
 		ret.SetValueAt(0, 0, 1);
 
 		return ret;
 	}
 
-	Matrix<T> submatrix;
+	Matrix<T, R-1, C-1> submatrix;
 
-	for (uint_t i = 0; i < matrix.rows; i++)
+	for (uint_t i = 0; i < R; i++)
 	{
-		for (uint_t j = 0; j < matrix.columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
-			submatrix = matrix.GetWithRemovedRows(i, i);
-			submatrix = submatrix.GetWithRemovedColumns(j, j);
+			submatrix = matrix.GetWithRemovedRow(i).GetWithRemovedColumn(j);
 
 			T value = submatrix.Determinant();
 			value *= (i + j) % 2 == 0 ? 1 : -1;
@@ -267,35 +173,30 @@ Matrix<T> Matrix<T>::CofactorMatrix(const Matrix<T>& matrix)
 	return ret;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::AdjugateMatrix(const Matrix<T>& matrix)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, C, R> Matrix<T, R, C>::AdjugateMatrix(const Matrix<T, R, C>& matrix)
 {
-	Matrix<T> ret = CofactorMatrix(matrix);
+	Matrix<T, R, C> ret = CofactorMatrix(matrix);
 	
-	ret.Transpose();
-	
-	return ret;
+	return Transpose(ret);
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::GetWithRemovedRows(const uint_t row_s, const uint_t row_e) const
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R-1, C> Matrix<T, R, C>::GetWithRemovedRow(const uint_t row) const
 {
-	if (row_s >= this->rows ||
-		row_e >= this->rows ||
-		row_s > row_e)
+	if (row >= R)
 	{
 		throw MatrixInvalidIndex();
 	}
 
-	uint_t rowCount = this->rows - (row_e - row_s + 1);
-	Matrix<T> submatrix(rowCount, this->columns);
+	Matrix<T, R - 1, C> submatrix;
 
 	uint_t targetRow = 0;
-	for (uint_t i = 0; i < submatrix.rows; i++, targetRow++)
+	for (uint_t i = 0; i < R-1; i++, targetRow++)
 	{
-		for (uint_t j = 0; j < submatrix.columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
-			while (targetRow >= row_s && targetRow <= row_e)
+			if (targetRow == row)
 			{
 				targetRow++;
 			}
@@ -307,26 +208,23 @@ Matrix<T> Matrix<T>::GetWithRemovedRows(const uint_t row_s, const uint_t row_e) 
 	return submatrix;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::GetWithRemovedColumns(const uint_t column_s, const uint_t column_e) const
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C-1> Matrix<T, R, C>::GetWithRemovedColumn(const uint_t column) const
 {
-	if (column_s >= this->columns ||
-		column_e >= this->columns ||
-		column_s > column_e)
+	if (column >= C)
 	{
 		throw MatrixInvalidIndex();
 	}
-	
-	uint_t colCount = this->columns - (column_e - column_s + 1);
-	Matrix<T> submatrix(this->rows, colCount);
 
-	for (uint_t i = 0; i < submatrix.rows; i++)
+	Matrix<T, R, C-1> submatrix;
+
+	for (uint_t i = 0; i < R; i++)
 	{
 		uint_t targetCol = 0;
 
-		for (uint_t j = 0; j < submatrix.columns; j++, targetCol++)
+		for (uint_t j = 0; j < C-1; j++, targetCol++)
 		{
-			while (targetCol >= column_s && targetCol <= column_e)
+			if (targetCol == column)
 			{
 				targetCol++;
 			}
@@ -338,8 +236,8 @@ Matrix<T> Matrix<T>::GetWithRemovedColumns(const uint_t column_s, const uint_t c
 	return submatrix;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const
+/*template <typename T, uint_t R, uint_t C>
+Matrix<T, R, C> Matrix<T, R, C>::GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const
 {
 	if (row_s >= this->rows || column_s >= this->columns ||
 		row_e >= this->rows || column_e >= this->columns ||
@@ -362,22 +260,22 @@ Matrix<T> Matrix<T>::GetSubmatrix(const uint_t row_s, const uint_t column_s, con
 	}
 
 	return submatrix;
-}
+}*/
 
-template <typename T>
-T Matrix<T>::Determinant() const
+template <typename T, uintm_t R, uintm_t C>
+T Matrix<T, R, C>::Determinant() const
 {
 	if (!this->IsSquare())
 	{
 		throw MatrixNoSquare();
 	}
 
-	if (this->rows == 1)
+	if (R == 1)
 	{
 		return this->GetValueAt(0, 0);
 	}
 
-	if (this->rows == 2)
+	if (R == 2)
 	{
 		return this->GetValueAt(0, 0) * this->GetValueAt(1, 1) - this->GetValueAt(0, 1) * this->GetValueAt(1, 0);
 	}
@@ -385,19 +283,18 @@ T Matrix<T>::Determinant() const
 	{
 		T determinant = 0;
 
-		Matrix<T> submatrix;
-		for (uint_t i = 0; i < this->columns; i++)
+		Matrix<T, R-1, C-1> submatrix;
+		for (uint_t i = 0; i < C; i++)
 		{
 			if (IsNearlyEqual(this->GetValueAt(0, i), 0))
 			{
 				continue;
 			}
 			
-			double value = this->GetValueAt(0, i);
+			T value = this->GetValueAt(0, i);
 			value *= ((i + 2) % 2) == 0 ? 1 : -1;
 			
-			submatrix = this->GetWithRemovedRows(0, 0);
-			submatrix = submatrix.GetWithRemovedColumns(i, i);
+			submatrix = this->GetWithRemovedRow(0).GetWithRemovedColumn(i);
 			
 			determinant += value * submatrix.Determinant();
 		}
@@ -406,14 +303,19 @@ T Matrix<T>::Determinant() const
 	}
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::CreateIdentity(const uint_t size)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C> Matrix<T, R, C>::CreateIdentity()
 {
-	Matrix<T> identity(size, size);
-
-	for (uint_t i = 0; i < size; i++)
+	if (R != C) 
 	{
-		for (uint_t j = 0; j < size; j++)
+		throw MatrixInvalidDimension();
+	}
+
+	Matrix<T, R, C> identity;
+
+	for (uint_t i = 0; i < R; i++)
+	{
+		for (uint_t j = 0; j < C; j++)
 		{
 			identity.SetValueAt(i, j, (T)(i == j ? 1 : 0));
 		}
@@ -422,25 +324,20 @@ Matrix<T> Matrix<T>::CreateIdentity(const uint_t size)
 	return identity;
 }
 
-template <typename T>
-Matrix<T>& Matrix<T>::operator=(Matrix<T> m)
+/*template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator=(Matrix<T, R, C> m)
 {
 	Swap(*this, m);
 
 	return *this;
-}
+}*/
 
-template <typename T>
-Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& m)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator+=(const Matrix<T, R, C>& m)
 {
-	if (m.rows != this->rows || m.columns != this->columns)
+	for (uint_t i = 0; i < R; i++)
 	{
-		throw MatrixInvalidDimension();
-	}
-
-	for (uint_t i = 0; i < this->rows; i++)
-	{
-		for (uint_t j = 0; j < this->columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
 			SetValueAt(i, j, this->GetValueAt(i, j) + m.GetValueAt(i, j));
 		}
@@ -449,17 +346,12 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& m)
 	return *this;
 }
 
-template <typename T>
-Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& m)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator-=(const Matrix<T, R, C>& m)
 {
-	if (m.rows != this->rows || m.columns != this->columns)
+	for (uint_t i = 0; i < R; i++)
 	{
-		throw MatrixInvalidDimension();
-	}
-
-	for (uint_t i = 0; i < this->rows; i++)
-	{
-		for (uint_t j = 0; j < this->columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
 			SetValueAt(i, j, this->GetValueAt(i, j) - m.GetValueAt(i, j));
 		}
@@ -468,15 +360,10 @@ Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& m)
 	return *this;
 }
 
-template <typename T>
-Matrix<T>& Matrix<T>::operator*=(const Matrix<T>& m)
+/*template <typename T, uint_t R, uint_t C>
+Matrix<T>& Matrix<T, R, C>::operator*=(const Matrix<T, R, C>& m)
 {
-	if (this->columns != m.rows)
-	{
-		throw MatrixInvalidDimension();
-	}
-
-	Matrix<T> resMatrix(this->rows, m.columns);
+	Matrix<T> resMatrix;
 
 	for (uint_t i = 0; i < resMatrix.rows; i++)
 	{
@@ -500,14 +387,14 @@ Matrix<T>& Matrix<T>::operator*=(const Matrix<T>& m)
 	resMatrix.values = nullptr;
 	
 	return *this;
-}
+}*/
 
-template <typename T>
-Matrix<T>& Matrix<T>::operator*=(const double& scalar)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const double& scalar)
 {
-	for (uint_t i = 0; i < this->rows; i++)
+	for (uint_t i = 0; i < R; i++)
 	{
-		for (uint_t j = 0; j < this->columns; j++)
+		for (uint_t j = 0; j < C; j++)
 		{
 			this->SetValueAt(i, j, (T)((double)this->GetValueAt(i, j) * scalar));
 		}
@@ -517,22 +404,22 @@ Matrix<T>& Matrix<T>::operator*=(const double& scalar)
 }
 
 /* Kinda dirty but works for now */
-template <typename T>
-Matrix<T>& Matrix<T>::operator*=(const float& scalar)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const float& scalar)
 {
 	return (*this *= (double)scalar);
 }
 
 /* Even more dirty */
-template <typename T>
-Matrix<T>& Matrix<T>::operator*=(const int& scalar)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const int& scalar)
 {
 	return (*this *= (double)scalar);
 }
 
 /* Even more dirty */
-template <typename T>
-Matrix<T>& Matrix<T>::operator*=(const uint_t& scalar)
+template <typename T, uintm_t R, uintm_t C>
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const uint_t& scalar)
 {
 	return (*this *= (double)scalar);
 }
@@ -583,5 +470,19 @@ const Matrix<T>& Matrix<T>::operator[](const int index) const
 //// We do not allow int matrices for now, until the solution
 //// for the reverse matrix problem has been decided
 // template class Matrix<int>;
-template class Matrix<float>;
-template class Matrix<double>;
+template class Matrix<float, 1, 2>;
+template class Matrix<float, 1, 3>;
+template class Matrix<float, 1, 4>;
+template class Matrix<float, 2, 1>;
+template class Matrix<float, 2, 2>;
+template class Matrix<float, 2, 3>;
+template class Matrix<float, 2, 4>;
+template class Matrix<float, 3, 1>;
+template class Matrix<float, 3, 2>;
+template class Matrix<float, 3, 3>;
+/*template class Matrix<float, 3, 4>;
+template class Matrix<float, 4, 1>;
+template class Matrix<float, 4, 2>;
+template class Matrix<float, 4, 3>;*/
+template class Matrix<float, 4, 4>;
+//template class Matrix<double>;

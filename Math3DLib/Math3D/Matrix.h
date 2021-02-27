@@ -1,113 +1,101 @@
 #pragma once
 #include "Math3dException.h"
 #include <iostream>
+//#include <cstdint>
 
 namespace math3d
 {
 	typedef unsigned int uint_t;
+	typedef unsigned char uintm_t;
 
-	template <typename T>
+	template <typename T, uintm_t R, uintm_t C>
 	class Matrix
 	{
 	protected:
-		T* values = nullptr;
-		uint_t rows;
-		uint_t columns;
+		T values[R * C];
 
 	public:
-		Matrix() {}
-		Matrix(const uint_t rows, const uint_t columns);
-		Matrix(const uint_t rows, const uint_t columns, const T* values);
-		Matrix(const Matrix<T>& m);
-		virtual ~Matrix();
+		Matrix();
+		Matrix(const T* values);
+		Matrix(const Matrix<T, R, C>& m);
+		virtual ~Matrix() {}
 
-		void CleanupMatrixData();
-
-		Matrix<T> GetRow(const uint_t row) const;
-		Matrix<T> GetColumn(const uint_t column) const;
-		Matrix<T> GetWithRemovedRows(const uint_t row_s, const uint_t row_e) const;
-		Matrix<T> GetWithRemovedColumns(const uint_t column_s, const uint_t column_e) const;
-		Matrix<T> GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const;
+		Matrix<T, 1, C> GetRow(const uint_t row) const;
+		Matrix<T, R, 1> GetColumn(const uint_t column) const;
+		Matrix<T, R-1, C> GetWithRemovedRow(const uint_t row) const;
+		Matrix<T, R, C-1> GetWithRemovedColumn(const uint_t column) const;
+		//Matrix<T> GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const;
 		T Determinant() const;
-		void Transpose();
 		void Negate();
-		bool Reverse();
 
-		static Matrix<T> Transpose(const Matrix<T>& matrix);
-		static Matrix<T> Negate(const Matrix<T>& matrix);
-		static Matrix<T> ReverseMatrix(const Matrix<T>& matrix);
-		static Matrix<T> CofactorMatrix(const Matrix<T>& matrix);
-		static Matrix<T> AdjugateMatrix(const Matrix<T>& matrix);
-		static Matrix<T> CreateIdentity(const uint_t size);
+		static Matrix<T, C, R> Transpose(const Matrix<T, R, C>& matrix);
+		static Matrix<T, R, C> Negate(const Matrix<T, R, C>& matrix);
+		static Matrix<T, C, R> ReverseMatrix(const Matrix<T, R, C>& matrix);
+		static Matrix<T, R, C> CofactorMatrix(const Matrix<T, R, C>& matrix);
+		static Matrix<T, C, R> AdjugateMatrix(const Matrix<T, R, C>& matrix);
+		static Matrix<T, R, C> CreateIdentity();
 
-		Matrix<T>& operator=(Matrix<T> m);
-		Matrix<T>& operator+=(const Matrix<T>& m);
-		Matrix<T>& operator-=(const Matrix<T>& m);
-		Matrix<T>& operator*=(const Matrix<T>& m);
-		Matrix<T>& operator*=(const double& scalar);
-		Matrix<T>& operator*=(const float& scalar);
-		Matrix<T>& operator*=(const int& scalar);
-		Matrix<T>& operator*=(const uint_t& scalar);
+		//Matrix<T, R, C>& operator=(Matrix<T, R, C> m);
+		Matrix<T, R, C>& operator+=(const Matrix<T, R, C>& m);
+		Matrix<T, R, C>& operator-=(const Matrix<T, R, C>& m);
+		//Matrix<T, R, C>& operator*=(const Matrix<T, R, C>& m);
+		Matrix<T, R, C>& operator*=(const double& scalar);
+		Matrix<T, R, C>& operator*=(const float& scalar);
+		Matrix<T, R, C>& operator*=(const int& scalar);
+		Matrix<T, R, C>& operator*=(const uint_t& scalar);
 		/*Matrix<T>& operator[](const int index);
 		const Matrix<T>& operator[](const int index) const;*/
 		
 		inline bool IsSquare() const
 		{
-			return (rows == columns);
+			return (R == C);
 		}
 
 		inline uint_t GetNumberOfRows() const
 		{
-			return rows;
+			return R;
 		}
 
 		inline uint_t GetNumberOfColumns() const
 		{
-			return columns;
+			return C;
 		}
 
 		inline T GetValueAt(const uint_t row, const uint_t column) const
 		{
-			if (row >= rows || column >= columns)
+			if (row >= R || column >= C)
 			{
 				throw MatrixInvalidIndex();
 			}
 
-			return *(values + row * columns + column);
+			return *(values + row * C + column);
 		}
 
 		inline void SetValueAt(const uint_t row, const uint_t column, const T value)
 		{
-			if (row >= rows || column >= columns)
+			if (row >= R || column >= C)
 			{
 				throw MatrixInvalidIndex();
 			}
 
-			*(values + row * columns + column) = value;
+			*(values + row * C + column) = value;
 		}
 
-		friend void Swap(Matrix<T>& matrixA, Matrix<T>& matrixB)
+		friend void Swap(Matrix<T, R, C>& matrixA, Matrix<T, R, C>& matrixB)
 		{
-			std::swap(matrixA.rows, matrixB.rows);
-			std::swap(matrixA.columns, matrixB.columns);
 			std::swap(matrixA.values, matrixB.values);
 		}
 
-		friend std::ostream& operator<<(std::ostream& out, const Matrix& m)
+		friend std::ostream& operator<<(std::ostream& out, const Matrix<T, R, C>& m)
 		{
-			if (m.values == nullptr)
-			{
-				return out;
-			}
-
 			out << std::endl;
 
-			for (int i = 0; i < m.rows; i++)
+			for (int i = 0; i < R; i++)
 			{
 				out << "|\t";
-				for (int j = 0; j < m.columns; j++)
+				for (int j = 0; j < C; j++)
 				{
-					out << *(m.values + i*m.columns + j) << "\t";
+					out << *(m.values + i*C + j) << "\t";
 				}
 				out << "|" << std::endl;
 			}
@@ -118,38 +106,38 @@ namespace math3d
 		}
 	};
 
-	template <typename T>
-	Matrix<T> operator+(Matrix<T> matrixA, const Matrix<T>& matrixB)
+	template <typename T, uint_t R, uint_t C>
+	Matrix<T, R, C> operator+(Matrix<T, R, C> matrixA, const Matrix<T, R, C>& matrixB)
 	{
 		return matrixA += matrixB;
 	}
 
-	template <typename T>
-	Matrix<T> operator-(Matrix<T> matrixA, const Matrix<T>& matrixB)
+	template <typename T, uint_t R, uint_t C>
+	Matrix<T, R, C> operator-(Matrix<T, R, C> matrixA, const Matrix<T, R, C>& matrixB)
 	{
 		return matrixA -= matrixB;
 	}
 
-	template <typename T>
-	Matrix<T> operator*(Matrix<T> matrix, const double& scalar)
+	template <typename T, uint_t R, uint_t C>
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const double& scalar)
 	{
 		return matrix *= scalar;
 	}
 
-	template <typename T>
-	Matrix<T> operator*(Matrix<T> matrix, const float& scalar)
+	template <typename T, uint_t R, uint_t C>
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const float& scalar)
 	{
 		return matrix *= scalar;
 	}
 
-	template <typename T>
-	Matrix<T> operator*(Matrix<T> matrix, const int& scalar)
+	template <typename T, uint_t R, uint_t C>
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const int& scalar)
 	{
 		return matrix *= scalar;
 	}
 
-	template <typename T>
-	Matrix<T> operator*(Matrix<T> matrix, const uint_t& scalar)
+	template <typename T, uint_t R, uint_t C>
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const uint_t& scalar)
 	{
 		return matrix *= scalar;
 	}
