@@ -23,7 +23,7 @@ namespace math3d
 		{
 			fld dword ptr[esp + 4]
 			fsqrt
-			ret 8
+			ret 4
 		}
 	}
 
