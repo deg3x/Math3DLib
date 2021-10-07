@@ -352,35 +352,6 @@ Matrix<T, R, C>& Matrix<T, R, C>::operator-=(const Matrix<T, R, C>& m)
 	return *this;
 }
 
-/*template <typename T, uint_t R, uint_t C>
-Matrix<T>& Matrix<T, R, C>::operator*=(const Matrix<T, R, C>& m)
-{
-	Matrix<T> resMatrix;
-
-	for (uint_t i = 0; i < resMatrix.rows; i++)
-	{
-		for (uint_t j = 0; j < resMatrix.columns; j++)
-		{
-			Matrix<T> tmpA = this->GetRow(i);
-			Matrix<T> tmpB = m.GetColumn(j);
-
-			T sum = (T)0;
-			for (uint_t x = 0; x < this->columns; x++)
-			{
-				sum += tmpA.GetValueAt(0, x) * tmpB.GetValueAt(x, 0);
-			}
-
-			resMatrix.SetValueAt(i, j, sum);
-		}
-	}
-
-	this->CleanupMatrixData();
-	*this = resMatrix;
-	resMatrix.values = nullptr;
-	
-	return *this;
-}*/
-
 template <typename T, uintm_t R, uintm_t C>
 Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const double& scalar)
 {

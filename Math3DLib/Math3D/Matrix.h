@@ -35,10 +35,8 @@ namespace math3d
 		static Matrix<T, C, R> AdjugateMatrix(const Matrix<T, R, C>& matrix);
 		static Matrix<T, R, C> CreateIdentity();
 
-		Matrix<T, R, C>& operator=(Matrix<T, R, C> m);
 		Matrix<T, R, C>& operator+=(const Matrix<T, R, C>& m);
 		Matrix<T, R, C>& operator-=(const Matrix<T, R, C>& m);
-		//Matrix<T, R, C>& operator*=(const Matrix<T, R, C>& m);
 		Matrix<T, R, C>& operator*=(const double& scalar);
 		Matrix<T, R, C>& operator*=(const float& scalar);
 		Matrix<T, R, C>& operator*=(const int& scalar);
@@ -143,5 +141,35 @@ namespace math3d
 	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const uint_t& scalar)
 	{
 		return matrix *= scalar;
+	}
+
+	template <typename T, uint_t R, uint_t C, uint_t RO, uint_t CO>
+	Matrix<T, R, CO> operator*(const Matrix<T, R, C>& matrixA, const Matrix<T, RO, CO>& matrixB)
+	{
+		if (C != RO)
+		{
+			throw MatrixInvalidDimension();
+		}
+
+		Matrix<T, R, CO> resMatrix;
+
+		for (uint_t i = 0; i < R; i++)
+		{
+			for (uint_t j = 0; j < CO; j++)
+			{
+				Matrix<T, 1, C> tmpA = matrixA.GetRow(i);
+				Matrix<T, RO, 1> tmpB = matrixB.GetColumn(j);
+
+				T sum = (T)0;
+				for (uint_t x = 0; x < C; x++)
+				{
+					sum += tmpA.GetValueAt(0, x) * tmpB.GetValueAt(x, 0);
+				}
+
+				resMatrix.SetValueAt(i, j, sum);
+			}
+		}
+
+		return resMatrix;
 	}
 }
