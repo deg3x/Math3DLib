@@ -467,9 +467,7 @@ const Matrix<T>& Matrix<T>::operator[](const int index) const
 }*/
 
 /* Enforce numeric types */
-//// We do not allow int matrices for now, until the solution
-//// for the reverse matrix problem has been decided
-// template class Matrix<int>;
+// We only allow float Matrices for now
 template class Matrix<float, 1, 2>;
 template class Matrix<float, 1, 3>;
 template class Matrix<float, 1, 4>;
@@ -480,9 +478,8 @@ template class Matrix<float, 2, 4>;
 template class Matrix<float, 3, 1>;
 template class Matrix<float, 3, 2>;
 template class Matrix<float, 3, 3>;
-/*template class Matrix<float, 3, 4>;
+template class Matrix<float, 3, 4>;
 template class Matrix<float, 4, 1>;
 template class Matrix<float, 4, 2>;
-template class Matrix<float, 4, 3>;*/
+template class Matrix<float, 4, 3>;
 template class Matrix<float, 4, 4>;
-//template class Matrix<double>;
