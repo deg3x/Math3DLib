@@ -38,7 +38,7 @@ namespace math3d
 
 	inline float DegToRad(float angle)
 	{
-		return (angle / 180.0f) * PI;
+		return (angle / 180.0f) * (float)PI;
 	}
 
 	inline double DegToRad(double angle)
@@ -48,7 +48,7 @@ namespace math3d
 
 	inline float RadToDeg(float angle)
 	{
-		return (angle / PI) * 180.0f;
+		return (angle / (float)PI) * 180.0f;
 	}
 
 	inline double RadToDeg(double angle)
