@@ -43,8 +43,11 @@ namespace math3d
 		Matrix<T, R, C>& operator*=(const float& scalar);
 		Matrix<T, R, C>& operator*=(const int& scalar);
 		Matrix<T, R, C>& operator*=(const uint_t& scalar);
-		/*Matrix<T>& operator[](const int index);
-		const Matrix<T>& operator[](const int index) const;*/
+		
+		inline T operator()(const uintm_t row, const uintm_t col)
+		{
+			return GetValueAt(row, col);
+		}
 		
 		inline bool IsSquare() const
 		{

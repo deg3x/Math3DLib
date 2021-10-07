@@ -424,48 +424,6 @@ Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const uint_t& scalar)
 	return (*this *= (double)scalar);
 }
 
-/*template <typename T>
-Matrix<T>& Matrix<T>::operator[](const int index)
-{
-	if (this->rows == 1)
-	{
-		if (this->columns <= index)
-		{
-			throw MatrixInvalidIndex();
-		}
-
-		return this->GetColumn(index);
-	}
-
-	if (this->rows <= index)
-	{
-		throw MatrixInvalidIndex();
-	}
-
-	return this->GetRow(index);
-}
-
-template <typename T>
-const Matrix<T>& Matrix<T>::operator[](const int index) const
-{
-	if (this->rows == 1)
-	{
-		if (this->columns <= index)
-		{
-			throw MatrixInvalidIndex();
-		}
-
-		return this->GetColumn(index);
-	}
-
-	if (this->rows <= index)
-	{
-		throw MatrixInvalidIndex();
-	}
-
-	return this->GetRow(index);
-}*/
-
 /* Enforce numeric types */
 // We only allow float Matrices for now
 template class Matrix<float, 1, 2>;
