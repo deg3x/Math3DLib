@@ -236,32 +236,6 @@ Matrix<T, R, C-1> Matrix<T, R, C>::GetWithRemovedColumn(const uint_t column) con
 	return submatrix;
 }
 
-/*template <typename T, uint_t R, uint_t C>
-Matrix<T, R, C> Matrix<T, R, C>::GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const
-{
-	if (row_s >= this->rows || column_s >= this->columns ||
-		row_e >= this->rows || column_e >= this->columns ||
-		row_s > row_e || column_s > column_e)
-	{
-		throw MatrixInvalidIndex();
-	}
-
-	uint_t rowCount = row_e - row_s + 1;
-	uint_t colCount = column_e - column_s + 1;
-
-	Matrix<T> submatrix(rowCount, colCount);
-
-	for (uint_t i = 0; i < rowCount; i++)
-	{
-		for (uint_t j = 0; j < colCount; j++)
-		{
-			submatrix.SetValueAt(i, j, this->GetValueAt(row_s + i, column_s + j));
-		}
-	}
-
-	return submatrix;
-}*/
-
 template <typename T, uintm_t R, uintm_t C>
 T Matrix<T, R, C>::Determinant() const
 {

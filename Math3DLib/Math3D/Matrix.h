@@ -24,7 +24,6 @@ namespace math3d
 		Matrix<T, R, 1> GetColumn(const uint_t column) const;
 		Matrix<T, R-1, C> GetWithRemovedRow(const uint_t row) const;
 		Matrix<T, R, C-1> GetWithRemovedColumn(const uint_t column) const;
-		//Matrix<T> GetSubmatrix(const uint_t row_s, const uint_t column_s, const uint_t row_e, const uint_t column_e) const;
 		T Determinant() const;
 		void Negate();
 
