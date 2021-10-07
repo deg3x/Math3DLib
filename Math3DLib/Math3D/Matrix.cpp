@@ -324,14 +324,6 @@ Matrix<T, R, C> Matrix<T, R, C>::CreateIdentity()
 	return identity;
 }
 
-/*template <typename T, uintm_t R, uintm_t C>
-Matrix<T, R, C>& Matrix<T, R, C>::operator=(Matrix<T, R, C> m)
-{
-	Swap(*this, m);
-
-	return *this;
-}*/
-
 template <typename T, uintm_t R, uintm_t C>
 Matrix<T, R, C>& Matrix<T, R, C>::operator+=(const Matrix<T, R, C>& m)
 {

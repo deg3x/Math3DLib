@@ -35,7 +35,7 @@ namespace math3d
 		static Matrix<T, C, R> AdjugateMatrix(const Matrix<T, R, C>& matrix);
 		static Matrix<T, R, C> CreateIdentity();
 
-		//Matrix<T, R, C>& operator=(Matrix<T, R, C> m);
+		Matrix<T, R, C>& operator=(Matrix<T, R, C> m);
 		Matrix<T, R, C>& operator+=(const Matrix<T, R, C>& m);
 		Matrix<T, R, C>& operator-=(const Matrix<T, R, C>& m);
 		//Matrix<T, R, C>& operator*=(const Matrix<T, R, C>& m);
