@@ -1,7 +1,7 @@
-#include "Quaternion.h"
-#include "Math3dUtil.h"
-#include "Math3dHelpers.h"
-#include "Vector.h"
+#include "quaternion.h"
+#include "math3dutil.h"
+#include "math3dhelpers.h"
+#include "vector.h"
 #include <iostream>
 
 using namespace math3d;

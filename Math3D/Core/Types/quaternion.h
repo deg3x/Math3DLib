@@ -1,5 +1,5 @@
 #pragma once
-#include "Math3dHelpers.h"
+#include "math3dhelpers.h"
 #include <iostream>
 
 namespace math3d

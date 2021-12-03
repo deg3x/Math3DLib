@@ -1,4 +1,4 @@
-#include "Math3dHelpers.h"
+#include "math3dhelpers.h"
 
 using namespace math3d;
 

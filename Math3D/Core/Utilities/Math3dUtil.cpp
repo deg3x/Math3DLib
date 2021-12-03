@@ -1,4 +1,4 @@
-#include "Math3dUtil.h"
+#include "math3dutil.h"
 #include <cmath>
 #include <iostream>
 

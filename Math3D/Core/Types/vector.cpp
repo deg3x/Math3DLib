@@ -1,6 +1,6 @@
-#include "Vector.h"
-#include "Math3dUtil.h"
-#include "Math3dException.h"
+#include "vector.h"
+#include "math3dutil.h"
+#include "math3dexceptions.h"
 #include <iostream>
 
 using namespace math3d;

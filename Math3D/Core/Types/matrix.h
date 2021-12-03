@@ -1,5 +1,5 @@
 #pragma once
-#include "Math3dException.h"
+#include "math3dexceptions.h"
 #include <iostream>
 //#include <cstdint>
 

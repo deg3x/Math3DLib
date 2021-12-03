@@ -1,6 +1,6 @@
 #pragma once
-#include "Vector.h"
-#include "Matrix.h"
+#include "vector.h"
+#include "matrix.h"
 
 namespace math3d
 {

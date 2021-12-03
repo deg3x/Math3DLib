@@ -4,6 +4,7 @@
 *.vcxproj
 *.vcxproj.filters
 Math3D.cpp
+bin-int/
 
 ### Github provided VS gitignore file
 ## Ignore Visual Studio temporary files, build results, and
