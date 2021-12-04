@@ -30,6 +30,8 @@ namespace math3d
 		Vector<T, S>& operator=(Vector<T, S> v);
 		Vector<T, S>& operator+=(const Vector<T, S>& v);
 		Vector<T, S>& operator-=(const Vector<T, S>& v);
+		Vector<T, S>& operator*=(const float& scalar);
+
 		T operator[](const int index) const;
 
 		inline T GetValueAt(const uint_t index) const
@@ -87,5 +89,11 @@ namespace math3d
 	Vector<T, S> operator-(Vector<T, S> vectorA, const Vector<T, S>& vectorB)
 	{
 		return vectorA -= vectorB;
+	}
+
+	template <typename T, uint_t S>
+	Vector<T, S> operator*(Vector<T, S> vector, float scalar)
+	{
+		return vector *= scalar;
 	}
 }

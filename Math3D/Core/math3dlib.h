@@ -4,3 +4,4 @@
 #include "quaternion.h"
 #include "math3dutil.h"
 #include "math3dhelpers.h"
+#include "sdf.h"
