@@ -1,11 +1,14 @@
 #pragma once
 #include <cfloat>
+#include <intrin.h>
 
 namespace math3d
 {
-#define PI 3.14159265358979323846
+#define PI			3.14159265358979323846
+#define SQRT_TWO	1.4142135623730950488016887242097
+#define SQRT_THREE	1.7320508075688772935274463415059
 
-	// Fast x86 square root calculation, utilizing hardware fsqrt
+	/*// Fast x86 square root calculation, utilizing hardware fsqrt
 	// Carmack's algorithm is history :)
 	inline double __declspec (naked) __fastcall sqrt(double val)
 	{
@@ -25,7 +28,11 @@ namespace math3d
 			fsqrt
 			ret 4
 		}
-	}
+	}*/
+
+	//
+	// Add actual sqrt implementations / Dont rely on inlined assembly (Intel intrinsics?)
+	//
 
 	float sin(float angle);
 	float cos(float angle);
