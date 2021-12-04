@@ -7,10 +7,10 @@ namespace math3d
 	class Quaternion
 	{
 	private:
-		double w;
-		double x;
-		double y;
-		double z;
+		float w;
+		float x;
+		float y;
+		float z;
 
 		void ClearNearlyZeroComponents();
 
@@ -18,7 +18,7 @@ namespace math3d
 		static const Quaternion zero;
 
 		Quaternion();
-		Quaternion(double w, double x, double y, double z);
+		Quaternion(float w, float x, float y, float z);
 		Quaternion(const Quaternion& quat);
 		~Quaternion() = default;
 
@@ -26,41 +26,41 @@ namespace math3d
 		void Inverse();
 		void Normalize();
 		bool IsUnit() const;
-		double Magnitude() const;
-		double DotProduct(const Quaternion& quat) const;
+		float Magnitude() const;
+		float DotProduct(const Quaternion& quat) const;
 		Vector3 RotateVector(Vector3 vec);
-		Quaternion Slerp(const Quaternion& quat, const double alpha) const;
+		Quaternion Slerp(const Quaternion& quat, const float alpha) const;
 
 		static Quaternion Normalize(const Quaternion& quat);
 		static Quaternion Conjugate(const Quaternion& quat);
 		static Quaternion Inverse(const Quaternion& quat);
 		static double DotProduct(const Quaternion& quatA, const Quaternion& quatB);
-		static Quaternion CreateRotationAboutAxis(double angle, Vector3 axis);
+		static Quaternion CreateRotationAboutAxis(float angle, Vector3 axis);
 		static Vector3 RotateVectorBy(Vector3 vec, Quaternion quat);
-		static Quaternion Slerp(const Quaternion& quatA, const Quaternion& quatB, const double A);
+		static Quaternion Slerp(const Quaternion& quatA, const Quaternion& quatB, const float A);
 
 		Quaternion& operator=(const Quaternion& quat);
 		Quaternion& operator+=(const Quaternion& quat);
 		Quaternion& operator-=(const Quaternion& quat);
 		Quaternion& operator*=(const Quaternion& quat);
-		Quaternion& operator*=(const double& scalar);
+		Quaternion& operator*=(const float& scalar);
 
-		inline void SetW(double val)
+		inline void SetW(float val)
 		{
 			this->w = val;
 		}
 
-		inline void SetX(double val)
+		inline void SetX(float val)
 		{
 			this->x = val;
 		}
 
-		inline void SetY(double val)
+		inline void SetY(float val)
 		{
 			this->y = val;
 		}
 
-		inline void SetZ(double val)
+		inline void SetZ(float val)
 		{
 			this->z = val;
 		}
@@ -108,7 +108,7 @@ namespace math3d
 		return quatA *= quatB;
 	}
 
-	inline Quaternion operator*(Quaternion quatA, const double& scalar)
+	inline Quaternion operator*(Quaternion quatA, const float& scalar)
 	{
 		return quatA *= scalar;
 	}

@@ -7,7 +7,7 @@
 using namespace math3d;
 
 Quaternion::Quaternion() : w(0.0f), x(0.0f), y(0.0f), z(0.0f) {}
-Quaternion::Quaternion(double w, double x, double y, double z) : w(w), x(x), y(y), z(z) {}
+Quaternion::Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {}
 Quaternion::Quaternion(const Quaternion& quat) : w(quat.w), x(quat.x), y(quat.y), z(quat.z) {}
 
 void Quaternion::ClearNearlyZeroComponents()
@@ -56,15 +56,15 @@ void Quaternion::Normalize()
 
 bool Quaternion::IsUnit() const
 {
-	return IsNearlyEqual(this->Magnitude(), 1.0);
+	return IsNearlyEqual(this->Magnitude(), 1.0f);
 }
 
-double Quaternion::Magnitude() const
+float Quaternion::Magnitude() const
 {
 	return sqrt(this->w * this->w + this->x * this->x + this->y * this->y + this->z * this->z);
 }
 
-double Quaternion::DotProduct(const Quaternion& quat) const
+float Quaternion::DotProduct(const Quaternion& quat) const
 {
 	return (this->w * quat.w + this->x * quat.x + this->y * quat.y + this->z * quat.z);
 }
@@ -79,7 +79,7 @@ Vector3 Quaternion::RotateVector(Vector3 vec)
 	return Vector3(ret);
 }
 
-Quaternion Quaternion::Slerp(const Quaternion& quat, const double alpha) const
+Quaternion Quaternion::Slerp(const Quaternion& quat, const float alpha) const
 {
 	Quaternion quatA = Quaternion::Normalize(*this);
 	Quaternion quatB = Quaternion::Normalize(quat);
@@ -132,7 +132,7 @@ double Quaternion::DotProduct(const Quaternion& quatA, const Quaternion& quatB)
 	return (quatA.w * quatB.w + quatA.x * quatB.x + quatA.y * quatB.y + quatA.z * quatB.z);
 }
 
-Quaternion Quaternion::CreateRotationAboutAxis(double angle, Vector3 axis)
+Quaternion Quaternion::CreateRotationAboutAxis(float angle, Vector3 axis)
 {
 	Quaternion rotation;
 
@@ -160,7 +160,7 @@ Vector3 Quaternion::RotateVectorBy(Vector3 vec, Quaternion quat)
 	return Vector3(ret);
 }
 
-Quaternion Quaternion::Slerp(const Quaternion& quatA, const Quaternion& quatB, const double alpha)
+Quaternion Quaternion::Slerp(const Quaternion& quatA, const Quaternion& quatB, const float alpha)
 {
 	Quaternion quaternionA = Quaternion::Normalize(quatA);
 	Quaternion quaternionB = Quaternion::Normalize(quatB);
@@ -223,7 +223,7 @@ Quaternion& Quaternion::operator*=(const Quaternion& quat)
 	return *this;
 }
 
-Quaternion& Quaternion::operator*=(const double& scalar)
+Quaternion& Quaternion::operator*=(const float& scalar)
 {
 	this->w = w * scalar;
 	this->x = x * scalar;
