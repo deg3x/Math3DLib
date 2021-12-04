@@ -43,7 +43,7 @@ namespace math3d
 		Quaternion& operator+=(const Quaternion& quat);
 		Quaternion& operator-=(const Quaternion& quat);
 		Quaternion& operator*=(const Quaternion& quat);
-		Quaternion& operator*=(const float& scalar);
+		Quaternion& operator*=(float scalar);
 
 		inline void SetW(float val)
 		{
@@ -108,7 +108,7 @@ namespace math3d
 		return quatA *= quatB;
 	}
 
-	inline Quaternion operator*(Quaternion quatA, const float& scalar)
+	inline Quaternion operator*(Quaternion quatA, float scalar)
 	{
 		return quatA *= scalar;
 	}

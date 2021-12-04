@@ -30,7 +30,7 @@ namespace math3d
 		Vector<T, S>& operator=(Vector<T, S> v);
 		Vector<T, S>& operator+=(const Vector<T, S>& v);
 		Vector<T, S>& operator-=(const Vector<T, S>& v);
-		Vector<T, S>& operator*=(const float& scalar);
+		Vector<T, S>& operator*=(float scalar);
 
 		T operator[](const int index) const;
 

@@ -174,7 +174,7 @@ Vector<T, S>& Vector<T, S>::operator-=(const Vector<T, S>& v)
 }
 
 template <typename T, uint_t S>
-Vector<T, S>& Vector<T, S>::operator*=(const float& scalar)
+Vector<T, S>& Vector<T, S>::operator*=(float scalar)
 {
 	for (int i = 0; i < S; i++)
 	{

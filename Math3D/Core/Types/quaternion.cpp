@@ -223,7 +223,7 @@ Quaternion& Quaternion::operator*=(const Quaternion& quat)
 	return *this;
 }
 
-Quaternion& Quaternion::operator*=(const float& scalar)
+Quaternion& Quaternion::operator*=(float scalar)
 {
 	this->w = w * scalar;
 	this->x = x * scalar;

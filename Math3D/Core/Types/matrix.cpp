@@ -327,7 +327,7 @@ Matrix<T, R, C>& Matrix<T, R, C>::operator-=(const Matrix<T, R, C>& m)
 }
 
 template <typename T, uintm_t R, uintm_t C>
-Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const double& scalar)
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(double scalar)
 {
 	for (uint_t i = 0; i < R; i++)
 	{
@@ -342,21 +342,21 @@ Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const double& scalar)
 
 /* Kinda dirty but works for now */
 template <typename T, uintm_t R, uintm_t C>
-Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const float& scalar)
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(float scalar)
 {
 	return (*this *= (double)scalar);
 }
 
 /* Even more dirty */
 template <typename T, uintm_t R, uintm_t C>
-Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const int& scalar)
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(int scalar)
 {
 	return (*this *= (double)scalar);
 }
 
 /* Even more dirty */
 template <typename T, uintm_t R, uintm_t C>
-Matrix<T, R, C>& Matrix<T, R, C>::operator*=(const uint_t& scalar)
+Matrix<T, R, C>& Matrix<T, R, C>::operator*=(uint_t scalar)
 {
 	return (*this *= (double)scalar);
 }

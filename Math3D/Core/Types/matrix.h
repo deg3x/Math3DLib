@@ -36,10 +36,10 @@ namespace math3d
 
 		Matrix<T, R, C>& operator+=(const Matrix<T, R, C>& m);
 		Matrix<T, R, C>& operator-=(const Matrix<T, R, C>& m);
-		Matrix<T, R, C>& operator*=(const double& scalar);
-		Matrix<T, R, C>& operator*=(const float& scalar);
-		Matrix<T, R, C>& operator*=(const int& scalar);
-		Matrix<T, R, C>& operator*=(const uint_t& scalar);
+		Matrix<T, R, C>& operator*=(double scalar);
+		Matrix<T, R, C>& operator*=(float scalar);
+		Matrix<T, R, C>& operator*=(int scalar);
+		Matrix<T, R, C>& operator*=(uint_t scalar);
 		
 		inline T operator()(const uintm_t row, const uintm_t col)
 		{
@@ -119,25 +119,25 @@ namespace math3d
 	}
 
 	template <typename T, uint_t R, uint_t C>
-	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const double& scalar)
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, double scalar)
 	{
 		return matrix *= scalar;
 	}
 
 	template <typename T, uint_t R, uint_t C>
-	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const float& scalar)
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, float scalar)
 	{
 		return matrix *= scalar;
 	}
 
 	template <typename T, uint_t R, uint_t C>
-	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const int& scalar)
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, int scalar)
 	{
 		return matrix *= scalar;
 	}
 
 	template <typename T, uint_t R, uint_t C>
-	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, const uint_t& scalar)
+	Matrix<T, R, C> operator*(Matrix<T, R, C> matrix, uint_t scalar)
 	{
 		return matrix *= scalar;
 	}
