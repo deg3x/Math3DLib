@@ -47,3 +47,25 @@ double math3d::acos(double value)
 {
 	return std::cos(value);
 }
+
+float math3d::clamp(float min, float max, float value)
+{
+	if (value < min)
+	{
+		return min;
+	}
+
+	if (value > max)
+	{
+		return max;
+	}
+
+	return value;
+}
+
+float math3d::lerp(float start, float end, float alpha)
+{
+	float alphaClamped = clamp(0, 1, alpha);
+	
+	return start + (end - start) * alphaClamped;
+}

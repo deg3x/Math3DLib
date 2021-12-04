@@ -43,6 +43,9 @@ namespace math3d
 	double asin(double value);
 	double acos(double value);
 
+	float clamp(float min, float max, float value);
+	float lerp(float start, float end, float alpha);
+
 	inline float DegToRad(float angle)
 	{
 		return (angle / 180.0f) * (float)PI;
